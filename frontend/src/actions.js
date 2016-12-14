@@ -2,8 +2,8 @@
  * Created by Jeffrey on 10/24/2016.
  */
 
-// export const url =  'https://webdev-dummy.herokuapp.com';
-export const url =  'http://localhost:3000';
+export const url =  'https://webdev-dummy.herokuapp.com';
+// export const url =  'http://localhost:3000';
 
 
 const Action = {
@@ -20,14 +20,28 @@ const Action = {
 export default Action
 
 const resource = (method, endpoint, payload) => {
-    const options =  {
-        method,
-        credentials: 'include',
-        headers: {
-            'Content-Type': 'application/json'
+    console.log("THE ENDPOINT: " + endpoint + "\n" + "THE PAYLOAD: " + payload + "\n" + "THE METHOD: " + method)
+    let options;
+    if (endpoint == "avatar") {
+        options = {body: payload}
+    } else {
+        options =  {
+            method,
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            }
         }
+        if (payload) options.body = JSON.stringify(payload)
     }
-    if (payload) options.body = JSON.stringify(payload)
+    // const options =  {
+    //     method,
+    //     credentials: 'include',
+    //     headers: {
+    //         'Content-Type': 'application/json'
+    //     }
+    // }
+    // if (payload) options.body = JSON.stringify(payload)
 
     console.log('The options for ', endpoint, options)
     return fetch(`${url}/${endpoint}`, options)
@@ -268,7 +282,15 @@ export function uploadAvatar(pic) {
     return (dispatch) => {
         if (pic) {
             const formData = new FormData()
-            formData.append('avatar', pic)
+            console.log("this is the pic" + pic)
+            formData.append('text', 'sample text')
+            formData.append('image', pic)
+            console.log("this is formData: "+formData)
+            const KEYS = formData.get('image').toString()
+            console.log('this is formData.get(image): ' + KEYS)
+            for (var value of formData.values()) {
+                console.log(value);
+            }
             resource('PUT', 'avatar', formData, false).then(r => {
                 dispatch({type : Action.UPDATE_PROFILE, avatar: r.avatar})
             })

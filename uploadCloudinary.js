@@ -72,11 +72,11 @@ function setup(app) {
 	// this provides a form.  This is uneeded because
 	// we have the upload on the frontend already.
     // but I provide it here for the inclass exercise example
-	app.get('/image', getImage)
+	app.get('/avatar', getImage)
 
 	// body-parser provides us the textual formData
 	// which is just title in this case
-	app.post('/image', uploadImage('title'), postImage)
+	app.post('/avatar', uploadImage('title'), postImage)
 }
 // remove the above three functions and change the last line below to
 //     module.exports = uploadImage
